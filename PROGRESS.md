@@ -20,10 +20,17 @@ Track your progress through the masterclass. Update this file as you complete mo
 - [x] Frontend build verified
 
 ### Module 2: BYO Retrieval + Memory
-- [ ] Not started
+- [x] Database schema (threads, messages, documents, chunks)
+- [x] Document upload and storage via Supabase
+- [x] Text chunking service
+- [x] Embeddings via local Ollama (nomic-embed-text:v1.5)
+- [x] Vector similarity search with RLS
+- [x] Documents page UI
+- [x] RAG integration in chat endpoint
+- [x] Supabase project setup and tested
 
 ### Module 3: Record Manager
-- [ ] Not started
+- [-] In progress
 
 ### Module 4: Metadata Extraction
 - [ ] Not started

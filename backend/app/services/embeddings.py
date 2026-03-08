@@ -13,22 +13,23 @@ async def get_embedding(text: str) -> Optional[List[float]]:
         if not text:
             return None
 
-        async with httpx.AsyncClient(timeout=60.0) as client:
+        async with httpx.AsyncClient(timeout=5.0) as client:
             response = await client.post(
                 f"{_settings.ollama_local_url}/api/embeddings",
                 json={"model": _settings.embedding_model, "prompt": text},
             )
 
             if response.status_code != 200:
-                logger.error(
-                    f"Embedding API error: {response.status_code} - {response.text}"
-                )
+                logger.warning(f"Embedding API error: {response.status_code}")
                 return None
 
             data = response.json()
             return data.get("embedding")
+    except httpx.TimeoutException:
+        logger.warning("Embedding timeout - local Ollama may not be running")
+        return None
     except Exception as e:
-        logger.error(f"Embedding error: {e}")
+        logger.warning(f"Embedding error: {e}")
         return None
 
 
