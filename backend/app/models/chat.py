@@ -63,6 +63,7 @@ class DocumentResponse(BaseModel):
     file_path: str
     file_size: Optional[int]
     mime_type: Optional[str]
+    content_hash: Optional[str]
     status: str
     created_at: datetime
     updated_at: datetime

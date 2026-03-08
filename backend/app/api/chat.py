@@ -13,6 +13,11 @@ from app.services.llm import stream_chat_completion
 from app.services.chunking import chunk_text
 from app.services.embeddings import get_embedding
 from app.services.retrieval import get_context_for_query
+from app.services.record_manager import (
+    compute_content_hash,
+    check_existing_document,
+    delete_document_chunks,
+)
 from app.core.config import get_settings
 from app.core.supabase import supabase_admin
 import json
@@ -24,17 +29,20 @@ logger = logging.getLogger(__name__)
 settings = get_settings()
 
 
+DEV_USER_ID = "00000000-0000-0000-0000-000000000000"
+
+
 def get_user_id(authorization: str = Header(None)) -> str:
     if not authorization:
-        return "dev-user"
+        return DEV_USER_ID
     if authorization.startswith("Bearer "):
         token = authorization[7:]
         try:
             result = supabase_admin.auth.get_user(token)
             return result.user.id
         except Exception:
-            return "dev-user"
-    return "dev-user"
+            return DEV_USER_ID
+    return DEV_USER_ID
 
 
 @router.get("/health", response_model=HealthResponse)
@@ -147,9 +155,33 @@ async def upload_document(
     file: UploadFile = File(...), user_id: str = Depends(get_user_id)
 ):
     file_content = await file.read()
+    content_hash = compute_content_hash(file_content)
+
+    existing_doc = await check_existing_document(user_id, content_hash)
+    if existing_doc and existing_doc.get("status") == "completed":
+        logger.info(f"Document already exists with hash {content_hash[:8]}...")
+        return existing_doc
+
+    if existing_doc:
+        logger.info(f"Reprocessing existing document with hash {content_hash[:8]}...")
+        await delete_document_chunks(existing_doc["id"])
+        try:
+            supabase_admin.storage.from_("documents").remove(
+                [existing_doc["file_path"]]
+            )
+        except Exception:
+            pass
+        supabase_admin.table("documents").delete().eq(
+            "id", existing_doc["id"]
+        ).execute()
+
     file_path = f"{user_id}/{uuid.uuid4()}_{file.filename}"
 
-    supabase_admin.storage.from_("documents").upload(file_path, file_content)
+    try:
+        supabase_admin.storage.from_("documents").upload(file_path, file_content)
+    except Exception as e:
+        logger.error(f"Storage upload error: {e}")
+        raise HTTPException(status_code=500, detail=f"Storage upload failed: {str(e)}")
 
     doc_result = (
         supabase_admin.table("documents")
@@ -160,6 +192,7 @@ async def upload_document(
                 "file_path": file_path,
                 "file_size": len(file_content),
                 "mime_type": file.content_type,
+                "content_hash": content_hash,
                 "status": "processing",
             }
         )

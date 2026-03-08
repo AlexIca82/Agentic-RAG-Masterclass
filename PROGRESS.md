@@ -28,9 +28,12 @@ Track your progress through the masterclass. Update this file as you complete mo
 - [x] Documents page UI
 - [x] RAG integration in chat endpoint
 - [x] Supabase project setup and tested
+- [x] End-to-end RAG pipeline verified
 
 ### Module 3: Record Manager
-- [-] In progress
+- [x] Content hashing for deduplication
+- [x] Check existing documents before processing
+- [x] Delete and reprocess modified documents
 
 ### Module 4: Metadata Extraction
 - [ ] Not started

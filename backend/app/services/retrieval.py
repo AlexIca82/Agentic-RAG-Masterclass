@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 async def search_similar_chunks(
-    user_id: str, query: str, top_k: int = 5, threshold: float = 0.7
+    user_id: str, query: str, top_k: int = 5, threshold: float = 0.3
 ) -> List[dict]:
     query_embedding = await get_embedding(query)
     if not query_embedding:
