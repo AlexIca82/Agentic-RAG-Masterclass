@@ -1,14 +1,14 @@
 # Cloud Code Agentic RAG Masterclass
 
-Build an agentic RAG application from scratch by collaborating with Claude Code. Follow along with our video series using the docs in this repo.
+Build an agentic RAG application from scratch by collaborating with Z.ai's GLM-5 LLM. Follow along with our video series using the docs in this repo.
 
-[![Claude Code RAG Masterclass](./video-thumbnail.png)](https://www.youtube.com/watch?v=xgPWCuqLoek)
+[![Agentic RAG Masterclass](./video-thumbnail.png)](https://www.youtube.com/watch?v=xgPWCuqLoek)
 
 [Watch the full video on YouTube](https://www.youtube.com/watch?v=xgPWCuqLoek)
 
 ## What This Is
 
-A hands-on course where you collaborate with Claude Code to build a full-featured RAG system. You're not the one writing code—Claude is. Your job is to guide it, understand what you're building, and course-correct when needed.
+A hands-on course where you collaborate with Claude Code to build a full-featured RAG system. You're not the one writing code—GLM5 is. Your job is to guide it, understand what you're building, and course-correct when needed.
 
 **You don't need to know how to code.** You do need to be technically minded and willing to learn about APIs, databases, and system architecture.
 
@@ -28,7 +28,7 @@ A hands-on course where you collaborate with Claude Code to build a full-feature
 | Database | Supabase (Postgres + pgvector + Auth + Storage) |
 | Doc Processing | Docling |
 | AI Models | Local (LM Studio) or Cloud (OpenAI, OpenRouter) |
-| Observability | LangSmith |
+| Observability | RAGAS |
 
 ## The 8 Modules
 
@@ -44,15 +44,15 @@ A hands-on course where you collaborate with Claude Code to build a full-feature
 ## Getting Started
 
 1. Clone this repo
-2. Install [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
+2. Use the Z.ai coding assistant plugin
 3. Open in your IDE (Cursor, VS Code, etc.)
-4. Run `claude` in the terminal
+4. Run `opencode` in the terminal
 5. Use the `/onboard` command to get started
 
 ## Docs
 
 - [PRD.md](./PRD.md) — What to build (the 8 modules in detail)
-- [CLAUDE.md](./CLAUDE.md) — Context for Claude Code
+- [ZAI.md](./ZAI.md) — Context for GML-5 Code
 - [PROGRESS.md](./PROGRESS.md) — Track your build progress
 
 ## Join the Community
